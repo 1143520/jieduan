@@ -5,11 +5,12 @@ WORKDIR /app
 # Install SQLite
 RUN apk add --no-cache sqlite
 
-# Copy package.json
+# Copy package files
 COPY package.json ./
+COPY package-lock.json ./
 
-# Install dependencies
-RUN npm install --legacy-peer-deps
+# Install dependencies with verbose output
+RUN npm --no-update-notifier --no-fund --loglevel=verbose ci --legacy-peer-deps || npm --no-update-notifier --no-fund --loglevel=verbose install --legacy-peer-deps --force
 
 # Copy source code
 COPY . .

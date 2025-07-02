@@ -8,9 +8,10 @@ WORKDIR /app
 # Copy package files
 COPY package.json ./
 # Generate package-lock.json if it doesn't exist
-RUN npm install --package-lock-only --legacy-peer-deps
-# Install dependencies
-RUN npm ci --legacy-peer-deps
+RUN npm --no-update-notifier --no-fund --loglevel=verbose install --package-lock-only --legacy-peer-deps --force
+
+# Install dependencies with fallback strategies
+RUN npm --no-update-notifier --no-fund --loglevel=verbose ci --legacy-peer-deps || npm --no-update-notifier --no-fund --loglevel=verbose install --legacy-peer-deps --force
 
 # Rebuild the source code only when needed
 FROM base AS builder
