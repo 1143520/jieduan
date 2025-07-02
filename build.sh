@@ -5,7 +5,7 @@ echo "🚀 开始构建戒断应用..."
 # 检查是否存在package-lock.json
 if [ ! -f "package-lock.json" ]; then
     echo "📦 生成package-lock.json..."
-    npm install --package-lock-only
+    npm install --package-lock-only --legacy-peer-deps
 fi
 
 # 构建Docker镜像
