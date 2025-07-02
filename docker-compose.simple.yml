@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  jieduan:
+    build: 
+      context: .
+      dockerfile: Dockerfile.simple
+    ports:
+      - "1468:1468"
+    environment:
+      - DATABASE_URL=file:/app/data/recovery.db
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-jieduan-secret-key-2024}
+      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:1468}
+    volumes:
+      - jieduan_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  jieduan_data:

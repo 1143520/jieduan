@@ -1,0 +1,32 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install SQLite
+RUN apk add --no-cache sqlite
+
+# Copy package.json
+COPY package.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Build the application
+RUN npm run build
+
+# Create data directory
+RUN mkdir -p /app/data
+
+# Expose port
+EXPOSE 1468
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=1468
+ENV HOSTNAME="0.0.0.0"
+
+# Initialize database and start
+CMD ["sh", "-c", "sqlite3 /app/data/recovery.db < /app/scripts/init-sqlite.sql 2>/dev/null || true && npm start"]
